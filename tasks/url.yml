@@ -1,0 +1,15 @@
+- block:
+  - name: create dest dir
+    file:
+      path: "{{app.value.download.dest.path}}"
+      state: directory
+      owner: "{{app.value.download.user.user|default(omit)}}"
+  - name: download package
+    unarchive:
+      src: "{{app.value.download.src.url.path}}"
+      dest: "{{app.value.download.dest.path}}"
+      remote_src: True
+      owner: "{{app.value.download.user.user|default(omit)}}"
+    when: app.value.download.src.unpack|default(False)
+  become: True
+

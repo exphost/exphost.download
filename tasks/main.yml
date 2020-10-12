@@ -1,3 +1,5 @@
 - name: debug
   debug:
     msg: "jeste downloade"
+
+- include_tasks: "{{app.value.download.src.type}}.yml"
