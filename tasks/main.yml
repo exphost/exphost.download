@@ -1,5 +1,10 @@
 - name: debug
   debug:
     msg: "jeste downloade"
+- debug:
+    msg: "{{downloads}}"
 
-- include_tasks: "{{app.value.download.src.type}}.yml"
+- include_tasks: "{{download.src.type}}.yml"
+  loop: "{{downloads}}"
+  loop_control:
+    loop_var: download
