@@ -1,0 +1,17 @@
+- block:
+  - name: install git
+    yum:
+      name: git
+  become: True
+  become_user: root
+
+- block:
+  - name: git checkout
+    vars:
+      dest_prefix: "{{user.home+'/' if not download.dest.path.startswith('/')}}"
+    git:
+      dest: "{{dest_prefix}}{{download.dest.path}}"
+      repo: "{{download.src.repo.path}}"
+    notify: "{{notifiers|default([])}}"
+  become: True
+  become_user: "{{user.user}}"
