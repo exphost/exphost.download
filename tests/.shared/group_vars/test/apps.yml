@@ -1,0 +1,77 @@
+apps_app10:
+  app10:
+    dummy:
+      type: dummy
+      enabled: True
+      user:
+        user: app10
+        uid: 510
+        group: app10
+        gid: 510
+        home: /app/app10
+      downloads:
+        - src:
+            type: git
+            repo:
+              path: https://github.com/exphost/test_app
+          dest:
+            path: code_app10
+
+apps_app11:
+  app11:
+    dummy:
+      type: dummy
+      enabled: True
+      user:
+        user: app11
+        uid: 511
+        group: app11
+        gid: 511
+        home: /app/app11
+      downloads:
+        - src:
+            type: git
+            repo:
+              path: https://github.com/exphost/test_app
+              version: v1
+          dest:
+            path: code_app11
+
+apps_app20:
+  app20:
+    dummy:
+      type: dummy
+      enabled: True
+      user:
+        user: app20
+        uid: 520
+        group: app20
+        gid: 520
+        home: /app/app20
+      downloads:
+        - src:
+            type: url
+            url:
+              path: "https://github.com/exphost/test_app/archive/v2.zip"
+          dest:
+            path: code_app20
+
+apps_app21:
+  app21:
+    dummy:
+      type: dummy
+      enabled: True
+      user:
+        user: app21
+        uid: 521
+        group: app21
+        gid: 521
+        home: /app/app21
+      downloads:
+        - src:
+            type: url
+            url:
+              path: "https://github.com/exphost/test_app/archive/v2.zip"
+            unpack: True
+          dest:
+            path: code_app21
