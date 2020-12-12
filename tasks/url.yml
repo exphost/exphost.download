@@ -1,9 +1,16 @@
 - block:
+  - name: install unzip
+    yum:
+      name:
+        - unzip
+      state: installed
+
   - name: create dest dir
     file:
       path: "{{download.dest.path}}"
       state: directory
       owner: "{{download.user.user|default(omit)}}"
+
   - name: download package
     unarchive:
       src: "{{download.src.url.path}}"
