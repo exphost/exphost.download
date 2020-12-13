@@ -24,4 +24,15 @@
       owner: "{{ download.user.user|default(omit) }}"
     when: download.src.unpack|default(False)
     notify: "{{ notifiers|default([]) }}"
+
+  - name: download package
+    vars:
+      dest_prefix: "{{ user.home+'/' if not download.dest.path.startswith('/') }}"
+    get_url:
+      url: "{{ download.src.url.path }}"
+      dest: "{{ dest_prefix }}{{ download.dest.path }}/{{ download.src.url.path | basename }}"
+      owner: "{{ download.user.user|default(omit) }}"
+      mode: "{{ download.dest.mode | default(0644) }}"
+    when: not download.src.unpack|default(False)
+    notify: "{{ notifiers|default([]) }}"
   become: True
