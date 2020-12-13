@@ -8,10 +8,11 @@
 - block:
   - name: git checkout
     vars:
-      dest_prefix: "{{user.home+'/' if not download.dest.path.startswith('/')}}"
+      dest_prefix: "{{ user.home+'/' if not download.dest.path.startswith('/') }}"
     git:
-      dest: "{{dest_prefix}}{{download.dest.path}}"
-      repo: "{{download.src.repo.path}}"
-    notify: "{{notifiers|default([])}}"
+      dest: "{{ dest_prefix }}{{ download.dest.path }}"
+      repo: "{{ download.src.repo.path }}"
+      version: "{{ download.src.repo.version|default('HEAD') }}"
+    notify: "{{ notifiers|default([]) }}"
   become: True
-  become_user: "{{user.user}}"
+  become_user: "{{ user.user }}"

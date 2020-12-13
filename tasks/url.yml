@@ -7,16 +7,17 @@
 
   - name: create dest dir
     file:
-      path: "{{download.dest.path}}"
+      path: "{{ download.dest.path }}"
       state: directory
-      owner: "{{download.user.user|default(omit)}}"
+      owner: "{{ download.user.user|default(omit) }}"
+      mode: 0755
 
   - name: download package
     unarchive:
-      src: "{{download.src.url.path}}"
-      dest: "{{download.dest.path}}"
+      src: "{{ download.src.url.path }}"
+      dest: "{{ download.dest.path }}"
       remote_src: True
-      owner: "{{download.user.user|default(omit)}}"
+      owner: "{{ download.user.user|default(omit) }}"
     when: download.src.unpack|default(False)
-    notify: "{{notifiers|default([])}}"
+    notify: "{{ notifiers|default([]) }}"
   become: True

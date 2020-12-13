@@ -2,9 +2,9 @@
   debug:
     msg: "jeste downloade"
 - debug:
-    msg: "{{downloads}}"
+    msg: "{{ downloads }}"
 
-- include_tasks: "{{download.src.type}}.yml"
-  loop: "{{downloads}}"
+- include_tasks: "{{ download.src.type }}.yml"
+  loop: "{{ downloads }}"
   loop_control:
     loop_var: download
