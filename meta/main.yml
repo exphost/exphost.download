@@ -15,4 +15,4 @@ galaxy_info:
     - fabsible
     - download
 
-allow_duplicates: True
+allow_duplicates: true

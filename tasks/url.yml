@@ -1,3 +1,4 @@
+---
 - block:
   - name: install unzip
     yum:
@@ -20,7 +21,7 @@
     unarchive:
       src: "{{ download.src.url.path }}"
       dest: "{{ dest_prefix }}{{ download.dest.path }}"
-      remote_src: True
+      remote_src: true
       owner: "{{ download.user.user|default(omit) }}"
     when: download.src.unpack|default(False)
     notify: "{{ notifiers|default([]) }}"
@@ -35,4 +36,4 @@
       mode: "{{ download.dest.mode | default(0644) }}"
     when: not download.src.unpack|default(False)
     notify: "{{ notifiers|default([]) }}"
-  become: True
+  become: true
