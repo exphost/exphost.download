@@ -1,0 +1,10 @@
+dependencies:
+  - role: exphost.create_user
+    vars:
+      user: "{{app.value.dummy.user}}"
+
+  - role: exphost.download
+    vars:
+      downloads: "{{app.value.dummy.downloads}}"
+      user: "{{app.value.dummy.user}}"
+    when: app.value.dummy.downloads
