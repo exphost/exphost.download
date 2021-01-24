@@ -28,3 +28,17 @@ def test_url_unpack(host):
       become=True,
       check=False,
     )["stdout"] == "Version 2"
+def test_url_download_auth(host):
+    assert host.ansible(
+      "stat",
+      "path=/app/app22/code_app22/v2.zip checksum_algorithm=md5",
+      become=True,
+      check=False,
+    )["stat"]["checksum"] == "9318d43e63cee2c089deda0c2d1a5f40"
+def test_url_unpack_auth(host):
+    assert host.ansible(
+      "command",
+      "cat /app/app23/code_app23/test_app-2/content.txt",
+      become=True,
+      check=False,
+    )["stdout"] == "Version 2"

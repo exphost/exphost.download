@@ -1,3 +1,37 @@
+apps_httpd:
+  httpd:
+    priority: 4
+    httpd:
+      enabled: True
+      type: exphost.httpd
+      user:
+        uid: 516
+      configs:
+        ports:
+          - 8084
+      vhosts:
+        vhost1:
+          root: var/www/test-vhost1
+          #root: var/www/test-vhost1
+          htpasswd_users:
+            u1:
+              password: password1
+          directories:
+            - path: /app/httpd/httpd/var/www/test-vhost1/
+              auth:
+                type: Basic
+                name: "Secret site"
+                provider_type: file
+                require: valid-user
+
+      downloads:
+        - src:
+            type: url
+            url:
+              path: "https://github.com/exphost/test_app/archive/v2.zip"
+          dest:
+            path: /app/httpd/httpd/var/www/test-vhost1/
+
 apps_app10:
   app10:
     dummy:
@@ -75,3 +109,46 @@ apps_app21:
             unpack: True
           dest:
             path: code_app21
+
+apps_app22:
+  app22:
+    dummy:
+      type: dummy
+      enabled: True
+      user:
+        user: app22
+        uid: 522
+        group: app22
+        gid: 522
+        home: /app/app22
+      downloads:
+        - src:
+            type: url
+            url:
+              path: "http://localhost:8084/v2.zip"
+              username: u1
+              password: password1
+          dest:
+            path: code_app22
+
+apps_app23:
+  app23:
+    dummy:
+      type: dummy
+      enabled: True
+      user:
+        user: app23
+        uid: 523
+        group: app23
+        gid: 523
+        home: /app/app23
+      downloads:
+        - src:
+            type: url
+            url:
+              path: "http://localhost:8084/v2.zip"
+              username: u1
+              password: password1
+            unpack: True
+          dest:
+            path: code_app23

@@ -15,25 +15,42 @@
       owner: "{{ download.user.user|default(omit) }}"
       mode: 0755
 
-  - name: download package and unpack
-    vars:
-      dest_prefix: "{{ user.home+'/' if not download.dest.path.startswith('/') }}"
-    unarchive:
-      src: "{{ download.src.url.path }}"
-      dest: "{{ dest_prefix }}{{ download.dest.path }}"
-      remote_src: true
-      owner: "{{ download.user.user|default(omit) }}"
-    when: download.src.unpack|default(False)
-    notify: "{{ notifiers|default([]) }}"
+  - block:
+      - name: create tmp dir
+        file:
+          path: /tmp/.ansible_download_temp
+          state: directory
+      - name: download temp file
+        get_url:
+          url: "{{ download.src.url.path }}"
+          dest: "/tmp/.ansible_download_temp/{{ download.src.url.path | basename }}"
+          owner: "{{ download.user.user|default(omit) }}"
+          mode: "{{ download.dest.mode | default(0644) }}"
+          url_username: "{{ download.src.url.username | default(omit) }}"
+          url_password: "{{ download.src.url.password | default(omit) }}"
 
-  - name: download package
-    vars:
-      dest_prefix: "{{ user.home+'/' if not download.dest.path.startswith('/') }}"
-    get_url:
-      url: "{{ download.src.url.path }}"
-      dest: "{{ dest_prefix }}{{ download.dest.path }}/{{ download.src.url.path | basename }}"
-      owner: "{{ download.user.user|default(omit) }}"
-      mode: "{{ download.dest.mode | default(0644) }}"
+      - name: unpack archive
+        vars:
+          dest_prefix: "{{ user.home+'/' if not download.dest.path.startswith('/') }}"
+        unarchive:
+          src: "/tmp/.ansible_download_temp/{{ download.src.url.path | basename }}"
+          dest: "{{ dest_prefix }}{{ download.dest.path }}"
+          owner: "{{ download.user.user|default(omit) }}"
+          remote_src: true
+        notify: "{{ notifiers|default([]) }}"
+    when: download.src.unpack|default(False)
+
+  - block:
+      - name: download package
+        vars:
+          dest_prefix: "{{ user.home+'/' if not download.dest.path.startswith('/') }}"
+        get_url:
+          url: "{{ download.src.url.path }}"
+          dest: "{{ dest_prefix }}{{ download.dest.path }}/{{ download.src.url.path | basename }}"
+          owner: "{{ download.user.user|default(omit) }}"
+          mode: "{{ download.dest.mode | default(0644) }}"
+          url_username: "{{ download.src.url.username | default(omit) }}"
+          url_password: "{{ download.src.url.password | default(omit) }}"
+        notify: "{{ notifiers|default([]) }}"
     when: not download.src.unpack|default(False)
-    notify: "{{ notifiers|default([]) }}"
   become: true
